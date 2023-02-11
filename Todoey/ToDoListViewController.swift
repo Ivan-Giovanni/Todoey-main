@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class ToDoListViewController: UITableViewController {
+class ToDoListViewController: UITableViewController{
     
     var itemArray = [Item]()
     
@@ -26,7 +26,7 @@ class ToDoListViewController: UITableViewController {
     }
 
 
-    //MARK - Tableview Datasource Methods
+    //MARK: - Tableview Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -66,7 +66,7 @@ class ToDoListViewController: UITableViewController {
         
     }
     
-    //MARK -Add new items
+    //MARK: -Add new items
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -101,7 +101,7 @@ class ToDoListViewController: UITableViewController {
         
     }
     
-    //MARK -Model Manipulation Method
+    //MARK: -Model Manipulation Method
 
     func saveItems() {
         
@@ -127,6 +127,34 @@ class ToDoListViewController: UITableViewController {
         catch {
             print("Error fetching data \(error)")
         }
+    }
+    
+}
+//MARK: -SearchBar methods
+
+extension ToDoListViewController : UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.predicate = predicate
+        
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        
+        request.sortDescriptors = [sortDescriptor]
+        
+        do {
+           itemArray = try context.fetch(request)
+        }
+        catch {
+            print("Error fetching data \(error)")
+        }
+        
+        tableView.reloadData()
+        
     }
     
 }
