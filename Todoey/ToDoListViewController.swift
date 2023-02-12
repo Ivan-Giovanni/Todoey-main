@@ -42,7 +42,7 @@ class ToDoListViewController: UITableViewController{
         
         cell.textLabel?.text = item.title
         
-        //Ternary operqtor ==>
+        //Ternary operator ==>
         //value = condition ? valueIfTrue : valueIfFalse
         
         cell.accessoryType = item.done == true ? .checkmark : .none
@@ -51,7 +51,7 @@ class ToDoListViewController: UITableViewController{
         
     }
     
-    //MARK -Tableview Delegate Methods
+    //MARK: -Tableview Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
