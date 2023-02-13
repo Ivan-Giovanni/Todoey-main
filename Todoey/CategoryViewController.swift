@@ -10,14 +10,14 @@ import CoreData
 
 class CategoryViewController: UITableViewController {
     
-    var categoryArray = ["Home"]
+    var categories = [Category]()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        loadCategories()
         
     }
     
@@ -25,7 +25,7 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return categoryArray.count
+        return categories.count
         
     }
     
@@ -33,7 +33,7 @@ class CategoryViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
-        cell.textLabel?.text = categoryArray[indexPath.row]
+        cell.textLabel?.text = categories[indexPath.row].name
 //        cell.textLabel?.textColor = .magenta
         
         return cell
@@ -43,7 +43,8 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - Data Manipulation Methods
     
-    func saveCategory() {
+    func saveCategories() {
+        
         do {
             try context.save()
             print("Save category successfully!")
@@ -51,6 +52,20 @@ class CategoryViewController: UITableViewController {
         catch {
             print("Error saving category \(error)")
         }
+        
+        tableView.reloadData()
+    }
+    
+    func loadCategories() {
+        
+        let request : NSFetchRequest<Category> = Category.fetchRequest()
+        do {
+            categories = try context.fetch(request)
+        }
+        catch {
+            print("Error loading category \(error)")
+        }
+        
         tableView.reloadData()
     }
     
@@ -65,12 +80,14 @@ class CategoryViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
             
+            //Saving data using Coredata
+            
             let newCategory = Category(context: self.context)
             newCategory.name = textField.text!
             
-            self.categoryArray.append(newCategory.name!)
+            self.categories.append(newCategory)
             
-            self.saveCategory()
+            self.saveCategories()
             
         }
         
