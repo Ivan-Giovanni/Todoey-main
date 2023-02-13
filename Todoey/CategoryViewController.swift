@@ -43,6 +43,7 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - Data Manipulation Methods
     
+    
     func saveCategories() {
         
         do {
@@ -69,8 +70,28 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    //MARK: - TableView Delegate Methods     // = What should happen when we click on a table view
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "goToItems", sender: self)
+        
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let destinationVC = segue.destination as! ToDoListViewController
+        
+        if let indexPath = tableView.indexPathsForSelectedRows {
+            destinationVC.selectedCategory = categories[indexPath.count]
+        }
+        
+    }
     
     //MARK: - Add New Categories
+    
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -101,8 +122,5 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
         
     }
-    
-    //MARK: - TableView Delegate Methods
-
     
 }
