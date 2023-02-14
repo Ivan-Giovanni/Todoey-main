@@ -62,7 +62,7 @@ class CategoryViewController: UITableViewController {
         
         categories = realm.objects(Category.self)
         
-                tableView.reloadData()
+        tableView.reloadData()
     }
     
     //MARK: - TableView Delegate Methods     // = What should happen when we click on a table view
