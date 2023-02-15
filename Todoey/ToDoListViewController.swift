@@ -41,11 +41,11 @@ class ToDoListViewController: SwipeTableViewController{
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        guard let originalColor = UIColor(hexString: "#FFFFFF") else { fatalError()}
+        guard let originalColor = UIColor(hexString: "#000000") else { fatalError()}
  
-        updateNavBar(withHexCode: "#FFFFFF")
+        updateNavBar(withHexCode: "#000000")
         
-        changeStatusBarColor(color: "#FFFFFF")
+        changeStatusBarColor(color: "#000000")
 
     }
     
