@@ -19,8 +19,8 @@ class CategoryViewController: SwipeTableViewController{
         
         loadCategories()
         
-        tableView.rowHeight = 60.0
-        
+        tableView.separatorStyle = .none
+
     }
     
     //MARK: -TableView DataSource Methods
@@ -35,8 +35,14 @@ class CategoryViewController: SwipeTableViewController{
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories added yet!"
-
+        if let category = categories?[indexPath.row] {
+            
+            cell.textLabel?.text = category.name ?? "No Categories added yet!"
+            
+            cell.backgroundColor = UIColor(hexString: category.color ?? "#FFFFFF")
+            cell.textLabel?.textColor = UIColor.init(contrastingBlackOrWhiteColorOn: UIColor(hexString: category.color), isFlat: true)
+        }
+        
         return cell
         
     }
@@ -44,6 +50,7 @@ class CategoryViewController: SwipeTableViewController{
     
     //MARK: - Data Manipulation Methods
     
+    //Save Categories
     
     func save(category : Category) {
         
@@ -58,6 +65,8 @@ class CategoryViewController: SwipeTableViewController{
         
         tableView.reloadData()
     }
+    
+    //Load Categories
     
     func loadCategories() {
         
@@ -97,8 +106,8 @@ class CategoryViewController: SwipeTableViewController{
         
         let destinationVC = segue.destination as! ToDoListViewController
         
-        if let indexPath = tableView.indexPathsForSelectedRows {
-            destinationVC.selectedCategory = categories?[indexPath.count]
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categories?[indexPath.row]
         }
         
     }
@@ -118,6 +127,7 @@ class CategoryViewController: SwipeTableViewController{
             
             let newCategory = Category()
             newCategory.name = textField.text!
+            newCategory.color = UIColor.randomFlat().hexValue()
 
             self.save(category: newCategory)
             
